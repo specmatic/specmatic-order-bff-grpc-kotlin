@@ -22,4 +22,4 @@ jobs:
       run: |
         docker run -p 9090:9090 \
         -v "$(pwd)/specmatic.yaml:/usr/src/app/specmatic.yaml" \
-        znsio/specmatic-grpc-trial virtualize --port=9090   
+        znsio/specmatic-grpc virtualize --port=9090   
