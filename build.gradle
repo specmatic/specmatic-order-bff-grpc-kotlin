@@ -1,31 +1,20 @@
-import org.gradle.plugins.ide.eclipse.model.SourceFolder
-
 buildscript {
-    ext {
-        protobufVersion = '3.23.4'
-        protobufPluginVersion = '0.9.4'
-        grpcVersion = '1.63.0'
-        springBootVersion = '3.3.1'
-        springBootGrpcVersion = '3.1.0.RELEASE'
-    }
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.3.1"
     }
 }
 
 plugins {
-    id 'idea'
-    id 'eclipse'
-    id 'java-library'
-    id 'org.springframework.boot' version "${springBootVersion}"
-    id 'com.google.protobuf' version "${protobufPluginVersion}"
-    id 'io.spring.dependency-management' version '1.1.5'
-    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.24'
+    id("idea")
+    id("eclipse")
+    id("java-library")
+    id("org.springframework.boot") version("3.3.1")
+    id("com.google.protobuf") version("0.9.4")
+    id("io.spring.dependency-management") version("1.1.5")
+    id("org.jetbrains.kotlin.jvm") version("2.0.0")
+    id("org.jetbrains.kotlin.plugin.spring") version("1.9.24")
 }
 
-group = 'com.store'
-version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
@@ -35,94 +24,66 @@ java {
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
-        url uri('lib')
+        url uri("lib")
     }
 }
 
 dependencies {
-    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
-    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    implementation "org.springframework.boot:spring-boot-starter"
+    implementation "org.springframework.boot:spring-boot-starter-aop"
+    implementation "net.devh:grpc-spring-boot-starter:3.1.0.RELEASE"
+    implementation "org.jetbrains.kotlin:kotlin-reflect"
+    implementation "build.buf:protovalidate:0.2.1"
 
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation "net.devh:grpc-spring-boot-starter:${springBootGrpcVersion}"
-    implementation 'org.jetbrains.kotlin:kotlin-reflect'
-    implementation 'build.buf:protovalidate:0.2.1'
+    compileOnly "jakarta.annotation:jakarta.annotation-api:1.3.5" // Java 9+ compatibility - Do NOT update to 2.0.0
 
-    compileOnly 'jakarta.annotation:jakarta.annotation-api:1.3.5' // Java 9+ compatibility - Do NOT update to 2.0.0
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.specmatic:specmatic-grpc:0.0.15'
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "io.specmatic.grpc:specmatic-grpc-min:$specmaticGrpcVersion"
 }
 
 sourceSets {
     main {
         proto {
-            srcDir  'specmatic-order-contracts/io/specmatic/examples/store/grpc'
+            srcDir 'specmatic-order-contracts/io/specmatic/examples/store/grpc'
         }
     }
 }
 
 protobuf {
+//    generatedFilesBaseDir = "$projectDir/src/generated"
     protoc {
-        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+        artifact = "com.google.protobuf:protoc:3.23.4"
     }
-    generatedFilesBaseDir = "$projectDir/src/generated"
-    clean {
-        delete generatedFilesBaseDir
-    }
+
     plugins {
         grpc {
-            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.63.0"
         }
     }
     generateProtoTasks {
-        all()*.plugins {
-            grpc {}
+        ofSourceSet('main').configureEach {
+            plugins {
+                grpc {}
+            }
         }
     }
 }
 
 kotlin {
     compilerOptions {
-        freeCompilerArgs.addAll '-Xjsr305=strict'
+        freeCompilerArgs.addAll("-Xjsr305=strict")
     }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-eclipse {
-    classpath {
-        file.beforeMerged { cp ->
-            def generatedGrpcFolder = new SourceFolder('src/generated/main/grpc', null);
-            generatedGrpcFolder.entryAttributes['ignore_optional_problems'] = 'true';
-            cp.entries.add(generatedGrpcFolder);
-            def generatedJavaFolder = new SourceFolder('src/generated/main/java', null);
-            generatedJavaFolder.entryAttributes['ignore_optional_problems'] = 'true';
-            cp.entries.add(generatedJavaFolder);
-        }
-    }
-}
-
-idea {
-    module {
-        sourceDirs += file("src/generated/main/java")
-        sourceDirs += file("src/generated/main/grpc")
-        generatedSourceDirs += file("src/generated/main/java")
-        generatedSourceDirs += file("src/generated/main/grpc")
-    }
-}
-
-test {
+tasks.test {
     useJUnitPlatform()
 
     testLogging {
         events "passed", "skipped", "failed"
         showStandardStreams = true
-        exceptionFormat = 'full'
+        exceptionFormat = "full"
     }
 
     afterSuite { desc, result ->

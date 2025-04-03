@@ -3,6 +3,7 @@ package com.store.order.bff
 import io.specmatic.grpc.HOST
 import io.specmatic.grpc.PORT
 import io.specmatic.grpc.SPECMATIC_GENERATIVE_TESTS
+import io.specmatic.grpc.VersionInfo
 import io.specmatic.grpc.junit.SpecmaticGrpcContractTest
 import io.specmatic.grpc.stub.GrpcStub
 import org.junit.jupiter.api.AfterAll
@@ -17,6 +18,7 @@ class ContractTest : SpecmaticGrpcContractTest {
         @JvmStatic
         @BeforeAll
         fun setup() {
+            println("Using specmatic gRPC version ${VersionInfo.version}")
             System.setProperty(HOST, "localhost")
             System.setProperty(PORT, "8085")
             System.setProperty(SPECMATIC_GENERATIVE_TESTS, "true")
