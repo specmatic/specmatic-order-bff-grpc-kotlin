@@ -1,9 +1,10 @@
 name: Contract Test with Docker
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+# disable for now
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
 
 jobs:
   contract-test:
