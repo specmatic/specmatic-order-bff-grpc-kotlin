@@ -53,7 +53,7 @@ sourceSets {
 protobuf {
 //    generatedFilesBaseDir = "$projectDir/src/generated"
     protoc {
-        artifact = "com.google.protobuf:protoc:3.23.4"
+        artifact = "com.google.protobuf:protoc:4.33.0"
     }
 
     plugins {
