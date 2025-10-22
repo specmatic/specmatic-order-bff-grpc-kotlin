@@ -40,6 +40,7 @@ dependencies {
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "io.specmatic.grpc:specmatic-grpc:$specmaticGrpcVersion"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.3"
 }
 
 sourceSets {
@@ -78,6 +79,8 @@ kotlin {
 
 tasks.test {
     useJUnitPlatform()
+    forkEvery = 1
+    maxParallelForks = 1
 
     testLogging {
         events "passed", "skipped", "failed"
