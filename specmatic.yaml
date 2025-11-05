@@ -1,9 +1,9 @@
-sources:
-  - provider: git
-    repository: https://github.com/specmatic/specmatic-order-contracts
-    test:
-      - io/specmatic/examples/store/grpc/order_bff.proto
-    stub:
-      - io/specmatic/examples/store/grpc/order_api/order.proto
-      - io/specmatic/examples/store/grpc/order_api/product.proto
-
+version: 2
+contracts:
+- git:
+    url: https://github.com/specmatic/specmatic-order-contracts
+  provides:
+  - io/specmatic/examples/store/grpc/order_bff.proto
+  consumes:
+  - io/specmatic/examples/store/grpc/order_api/order.proto
+  - io/specmatic/examples/store/grpc/order_api/product.proto

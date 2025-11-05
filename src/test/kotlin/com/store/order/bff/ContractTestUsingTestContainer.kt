@@ -46,7 +46,6 @@ class ContractTestUsingTestContainer {
                     "/usr/src/app/build/reports/specmatic",
                     BindMode.READ_WRITE,
                 ).waitingFor(Wait.forLogMessage(".*gRPC Stub server is running on.*", 1))
-//                .withNetworkMode("host")
                 .withLogConsumer { print(it.utf8String) }
     }
 
