@@ -9,10 +9,8 @@ import io.specmatic.grpc.junit.SpecmaticGrpcContractTest
 import io.specmatic.grpc.stub.GrpcStub
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.springframework.boot.test.context.SpringBootTest
 
-@Disabled("Enable when specmatic version >2.28.1 is out")
 @SpringBootTest
 class ContractTest : SpecmaticGrpcContractTest {
     companion object {
