@@ -53,7 +53,7 @@ class ContractTestUsingTestContainer {
         GenericContainer("specmatic/specmatic-grpc")
             .withCommand(
                 "test",
-                "--host=localhost",
+                "--host=host.docker.internal",
                 "--port=8085",
                 "--protoc-version=3.23.4",
             ).withEnv(SPECMATIC_GENERATIVE_TESTS, "true")
@@ -66,7 +66,7 @@ class ContractTestUsingTestContainer {
                 "/usr/src/app/build/reports/specmatic",
                 BindMode.READ_WRITE,
             ).waitingFor(Wait.forLogMessage(".*Failed Tests.*", 1))
-            .withNetworkMode("host")
+            .withExtraHost("host.docker.internal", "host-gateway")
             .withLogConsumer { print(it.utf8String) }
 
     @Test
