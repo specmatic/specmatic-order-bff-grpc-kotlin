@@ -31,6 +31,7 @@ class ContractTestUsingTestContainer {
                     "virtualize",
                     "--port=$GRPC_STUB_PORT",
                     "--protoc-version=3.23.4",
+                    "--import-path=../"
                 ).withEnv(SPECMATIC_GENERATIVE_TESTS, "true")
                 .withCreateContainerCmdModifier { cmd ->
                     cmd.hostConfig?.withPortBindings(

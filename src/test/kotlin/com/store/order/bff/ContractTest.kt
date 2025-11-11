@@ -1,6 +1,7 @@
 package com.store.order.bff
 
 import io.specmatic.grpc.HOST
+import io.specmatic.grpc.IMPORT_PATHS
 import io.specmatic.grpc.PORT
 import io.specmatic.grpc.PROTOC_VERSION
 import io.specmatic.grpc.SPECMATIC_GENERATIVE_TESTS
@@ -24,6 +25,8 @@ class ContractTest : SpecmaticGrpcContractTest {
             System.setProperty(PORT, "8085")
             System.setProperty(SPECMATIC_GENERATIVE_TESTS, "true")
             System.setProperty(PROTOC_VERSION, "3.23.4")
+            // This path is relative to the specified proto file in specmatic config file
+            System.setProperty(IMPORT_PATHS, "../")
             grpcStub = GrpcStub.createGrpcStub(9090)
             grpcStub?.start()
         }

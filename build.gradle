@@ -23,6 +23,7 @@ java {
 }
 
 repositories {
+    mavenLocal()
     maven {
         url "https://repo.specmatic.io/releases"
     }
