@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      CTRF_RESULT_PATH: "build/reports/specmatic/grpc/test/ctrf/*.json"
 
     steps:
     - uses: actions/checkout@v4
@@ -37,7 +39,7 @@ jobs:
       if: always() # Run even if tests fail
       with:
         name: ctrf-report
-        path: build/reports/specmatic/grpc/ctrf/*.json
+        path: ${{ env.CTRF_RESULT_PATH }}
         retention-days: 5
     
     # Display CTRF test results
@@ -45,4 +47,4 @@ jobs:
       uses: ctrf-io/github-test-reporter@v1
       if: always() # Run even if tests fail
       with:
-        report-path: './build/reports/specmatic/grpc/ctrf/*.json'
+        report-path: ${{ env.CTRF_RESULT_PATH }}
