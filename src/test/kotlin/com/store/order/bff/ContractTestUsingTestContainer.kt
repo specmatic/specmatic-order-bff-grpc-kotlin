@@ -32,7 +32,7 @@ class ContractTestUsingTestContainer {
                     "--port=$GRPC_STUB_PORT",
                     "--protoc-version=3.23.4",
                     "--import-path=../"
-                ).withEnv(SPECMATIC_GENERATIVE_TESTS, "true")
+                ).withEnv(SPECMATIC_GENERATIVE_TESTS, "false")
                 .withCreateContainerCmdModifier { cmd ->
                     cmd.hostConfig?.withPortBindings(
                         PortBinding(Ports.Binding.bindPort(GRPC_STUB_PORT), ExposedPort(GRPC_STUB_PORT)),
@@ -57,7 +57,12 @@ class ContractTestUsingTestContainer {
                 "--host=host.docker.internal",
                 "--port=8085",
                 "--protoc-version=3.23.4",
-            ).withEnv(SPECMATIC_GENERATIVE_TESTS, "true")
+            ).withEnv(SPECMATIC_GENERATIVE_TESTS, "false")
+            .withFileSystemBind(
+                "./spec",
+                "/usr/src/app/spec",
+                BindMode.READ_ONLY
+            )
             .withFileSystemBind(
                 "./specmatic.yaml",
                 "/usr/src/app/specmatic.yaml",

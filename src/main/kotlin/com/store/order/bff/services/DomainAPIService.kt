@@ -28,16 +28,18 @@ class DomainAPIService {
     }
 
     fun findProducts(findAvailableProductsRequest: findAvailableProductsRequest): ProductListResponse {
-        val products = productServiceGrpc.searchProducts(
+        val searchProductRequest =
             ServiceProductSearchRequest.newBuilder().setType(
                 ServiceProductType.forNumber(findAvailableProductsRequest.typeValue)
             ).build()
-        ).productsList.map {
+        val products = productServiceGrpc.searchProducts(searchProductRequest)
+        val response = products.productsList.map {
             Product.newBuilder().setId(it.id).setName(it.name).setInventory(it.inventory).setType(
                 ProductType.forNumber(it.typeValue)
             ).build()
         }
-        return ProductListResponse.newBuilder().addAllProducts(products).build()
+        println("sending request to findProducts $findAvailableProductsRequest")
+        return ProductListResponse.newBuilder().addAllProducts(response).build()
     }
 
     fun createProduct(newProduct: NewProduct): ProductId {

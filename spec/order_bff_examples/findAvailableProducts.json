@@ -1,0 +1,17 @@
+{
+  "fullMethodName": "com.store.order.bff.OrderService/findAvailableProducts",
+  "request": {
+    "type": "GADGET",
+    "pageSize": 10
+  },
+  "response": {
+    "products": [
+      {
+        "id": 1,
+        "name": "iPhone",
+        "type": "GADGET",
+        "inventory": 5
+      }
+    ]
+  }
+}

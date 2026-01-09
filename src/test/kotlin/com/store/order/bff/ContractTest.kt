@@ -23,7 +23,7 @@ class ContractTest : SpecmaticGrpcContractTest {
             println("Using specmatic gRPC version ${VersionInfo.version}")
             System.setProperty(HOST, "localhost")
             System.setProperty(PORT, "8085")
-            System.setProperty(SPECMATIC_GENERATIVE_TESTS, "true")
+            System.setProperty(SPECMATIC_GENERATIVE_TESTS, "false")
             System.setProperty(PROTOC_VERSION, "3.23.4")
             // This path is relative to the specified proto file in specmatic config file
             System.setProperty(IMPORT_PATHS, "../")
