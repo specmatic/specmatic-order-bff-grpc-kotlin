@@ -22,6 +22,7 @@ class DomainAPIService {
     fun createOrder(newOrder: NewOrder): OrderId {
         val orderId = orderServiceGrpc
             .withWaitForReady()
+            .withDeadlineAfter(10, java.util.concurrent.TimeUnit.SECONDS)
             .addOrder(
             ServiceNewOrder.newBuilder().setProductId(newOrder.productId).setCount(newOrder.count)
                 .setStatus(ServiceOrderStatus.PENDING).build()
@@ -32,6 +33,7 @@ class DomainAPIService {
     fun findProducts(findAvailableProductsRequest: findAvailableProductsRequest): ProductListResponse {
         val products = productServiceGrpc
             .withWaitForReady()
+            .withDeadlineAfter(10, java.util.concurrent.TimeUnit.SECONDS)
             .searchProducts(
             ServiceProductSearchRequest.newBuilder().setType(
                 ServiceProductType.forNumber(findAvailableProductsRequest.typeValue)
@@ -47,6 +49,7 @@ class DomainAPIService {
     fun createProduct(newProduct: NewProduct): ProductId {
         val productId = productServiceGrpc
             .withWaitForReady()
+            .withDeadlineAfter(10, java.util.concurrent.TimeUnit.SECONDS)
             .addProduct(
             ServiceNewProduct.newBuilder().setName(newProduct.name).setType(
                 ServiceProductType.forNumber(newProduct.typeValue)
