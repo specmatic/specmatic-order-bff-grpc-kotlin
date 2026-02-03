@@ -31,6 +31,12 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
+    - name: Save Specmatic license
+      if: github.ref == 'refs/heads/main'
+      run: |
+        mkdir -p ~/.specmatic
+        echo "${{ secrets.SPECMATIC_LICENSE_KEY }}" > ~/.specmatic/specmatic-license.txt
+
     - name: Build with Gradle Wrapper
       run: ./gradlew clean test
 
@@ -48,3 +54,18 @@ jobs:
       if: always() # Run even if tests fail
       with:
         report-path: ${{ env.CTRF_RESULT_PATH }}
+
+    - name: Publish Build Reports to Specmatic Insights
+      if: github.ref == 'refs/heads/main'
+      run: |
+        docker run \
+          -v ${{ github.workspace }}:/workspace \
+          -v ~/.specmatic:/root/.specmatic \
+          -w /workspace \
+          specmatic/enterprise \
+          send-report \
+          --metadata build_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} \
+          --branch-name ${{ github.ref_name }} \
+          --repo-name ${{ github.event.repository.name }} \
+          --repo-id ${{ github.repository_id }} \
+          --repo-url ${{ github.event.repository.html_url }}

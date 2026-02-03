@@ -20,7 +20,9 @@ class DomainAPIService {
     lateinit var productServiceGrpc: ProductServiceGrpc.ProductServiceBlockingStub
 
     fun createOrder(newOrder: NewOrder): OrderId {
-        val orderId = orderServiceGrpc.addOrder(
+        val orderId = orderServiceGrpc
+            .withWaitForReady()
+            .addOrder(
             ServiceNewOrder.newBuilder().setProductId(newOrder.productId).setCount(newOrder.count)
                 .setStatus(ServiceOrderStatus.PENDING).build()
         )
@@ -28,7 +30,9 @@ class DomainAPIService {
     }
 
     fun findProducts(findAvailableProductsRequest: findAvailableProductsRequest): ProductListResponse {
-        val products = productServiceGrpc.searchProducts(
+        val products = productServiceGrpc
+            .withWaitForReady()
+            .searchProducts(
             ServiceProductSearchRequest.newBuilder().setType(
                 ServiceProductType.forNumber(findAvailableProductsRequest.typeValue)
             ).build()
@@ -41,7 +45,9 @@ class DomainAPIService {
     }
 
     fun createProduct(newProduct: NewProduct): ProductId {
-        val productId = productServiceGrpc.addProduct(
+        val productId = productServiceGrpc
+            .withWaitForReady()
+            .addProduct(
             ServiceNewProduct.newBuilder().setName(newProduct.name).setType(
                 ServiceProductType.forNumber(newProduct.typeValue)
             ).setInventory(newProduct.inventory).build()
