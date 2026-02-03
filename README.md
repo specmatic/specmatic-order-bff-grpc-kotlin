@@ -57,12 +57,12 @@ gradlew clean test
 #### 1. Start the Specmatic gRPC stub server to emulate domain service:
 - On Unix and Windows Powershell:
 ```shell
-docker run -p 9090:9090 -v "$(pwd)/specmatic.yaml:/usr/src/app/specmatic.yaml" specmatic/specmatic-grpc virtualize --protoc-version="3.23.4"  --port=9090
+docker run --rm --network host -v "$(pwd):/usr/src/app" specmatic/enterprise mock
 ```
 
 - On Windows Command Prompt:
 ```shell
-docker run -p 9090:9090 -v "%cd%/specmatic.yaml:/usr/src/app/specmatic.yaml" specmatic/specmatic-grpc virtualize --protoc-version="3.23.4" --port=9090
+docker run --rm --network host -v "%cd%:/usr/src/app" specmatic/enterprise mock
 ```
 
 #### 2. Build and run the BFF service (System Under Test) in a Docker container:
@@ -78,12 +78,12 @@ docker run --network host -p 8085:8085 specmatic-order-bff-grpc
 #### 3. Finally, run Specmatic Contract on the BFF service (System Under Test):
 - On Unix and Windows Powershell:
 ```shell
-docker run --network host -v "$(pwd)/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$(pwd)/build/reports/specmatic:/usr/src/app/build/reports/specmatic" -e SPECMATIC_GENERATIVE_TESTS=true specmatic/specmatic-grpc test --protoc-version="3.23.4" --port=8085
+docker run --rm --network host -v "$(pwd):/usr/src/app" specmatic/enterprise test
 ```
 
 - On Windows Command Prompt:
 ```shell
-docker run --network host -v "%cd%/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "%cd%/build/reports/specmatic:/usr/src/app/build/reports/specmatic" -e SPECMATIC_GENERATIVE_TESTS=true specmatic/specmatic-grpc test --protoc-version="3.23.4" --port=8085
+docker run --rm --network host -v "%cd%:/usr/src/app" specmatic/enterprise test
 ```
 
 ## Developer notes
