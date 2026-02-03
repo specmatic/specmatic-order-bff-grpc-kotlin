@@ -32,6 +32,3 @@ test:
 report:
   formatters:
     - type: ctrf
-
-examples:
-  - ./src/test/resources/specmatic
