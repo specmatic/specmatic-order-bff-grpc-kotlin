@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.5.9"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.5.10"
     }
 }
 
@@ -8,32 +8,15 @@ plugins {
     id("idea")
     id("eclipse")
     id("java-library")
-    id("org.springframework.boot") version("3.5.9")
+    id("org.springframework.boot") version("3.5.10")
     id("com.google.protobuf") version("0.9.6")
     id("io.spring.dependency-management") version("1.1.7")
-    id("org.jetbrains.kotlin.jvm") version("2.3.0")
+    id("org.jetbrains.kotlin.jvm") version("2.3.10")
     id("org.jetbrains.kotlin.plugin.spring") version("1.9.25")
 }
 
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
 repositories {
-    maven {
-        name = "sonatypeSnapshots"
-        url = uri("https://central.sonatype.com/repository/maven-snapshots")
-        mavenContent {
-            snapshotsOnly()
-        }
-    }
     mavenLocal()
-    maven {
-        url "https://repo.specmatic.io/releases"
-    }
     mavenCentral()
 }
 
