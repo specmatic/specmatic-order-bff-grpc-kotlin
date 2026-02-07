@@ -37,7 +37,7 @@ dependencies {
 sourceSets {
     main {
         proto {
-            srcDir 'specmatic-order-contracts/io/specmatic/examples/store/grpc'
+            srcDirs = ['specmatic-order-contracts/io/specmatic/examples/store/grpc']
         }
     }
 }
@@ -68,7 +68,12 @@ kotlin {
     }
 }
 
+import com.google.protobuf.gradle.GenerateProtoTask
+
 tasks.test {
+    // Ensure proto generation runs before tests
+    dependsOn tasks.withType(GenerateProtoTask)
+
     useJUnitPlatform()
     forkEvery = 1
     maxParallelForks = 1
@@ -85,5 +90,14 @@ tasks.test {
             println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
             println "-----------------------------------------------------"
         }
+    }
+}
+
+// Ensure protobuf generated sources are created before common lifecycle tasks
+// This wires the protobuf GenerateProtoTask(s) to compile, package, run and test tasks so generated sources are available.
+def protoTasks = tasks.withType(GenerateProtoTask)
+["compileKotlin", "compileJava", "processResources", "classes", "jar", "bootJar", "bootRun", "assemble", "build"].each { taskName ->
+    tasks.matching { it.name == taskName }.configureEach {
+        dependsOn protoTasks
     }
 }
