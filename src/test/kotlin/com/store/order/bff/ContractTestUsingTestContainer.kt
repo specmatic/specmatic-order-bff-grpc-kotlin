@@ -28,7 +28,7 @@ class ContractTestUsingTestContainer {
                 .withFileSystemBind("./src", "/usr/src/app/src", BindMode.READ_ONLY)
                 .withFileSystemBind("./specmatic.yaml", "/usr/src/app/specmatic.yaml", BindMode.READ_ONLY)
                 .withNetworkMode("host")
-                .waitingFor(Wait.forLogMessage(".*gRPC Stub server is running on.*", 1))
+                .waitingFor(Wait.forLogMessage(".*gRPC Mock server is running on.*", 1))
                 .withLogConsumer { print(it.utf8String) }
     }
 
