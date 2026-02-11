@@ -38,6 +38,12 @@ The [`ContractTest`](./src/test/kotlin/com/store/order/bff/ContractTest.kt) clas
    git config submodule.recurse true
    ```
 
+4. Run the generateProto task to generate the classes from the proto files
+
+   ```shell
+   ./gradlew generateProto
+   ```
+
 ## Running Contract Tests
 
 ### Using Gradle
