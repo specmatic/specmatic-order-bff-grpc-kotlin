@@ -38,6 +38,12 @@ The [`ContractTest`](./src/test/kotlin/com/store/order/bff/ContractTest.kt) clas
    git config submodule.recurse true
    ```
 
+4. Run the generateProto task to generate the classes from the proto files
+
+   ```shell
+   ./gradlew generateProto
+   ```
+
 ## Running Contract Tests
 
 ### Using Gradle
@@ -141,4 +147,4 @@ Alternatively you can also use [grpcui](https://github.com/fullstorydev/grpcui) 
 grpcui -plaintext localhost:8085
 ```
 
-Also observe corresponding logs in the Specmatic Stub Server which is emulating domain service to understand the interactions between BFF and Domain and Service.
+Also observe corresponding logs in the specmatic mock Server which is emulating domain service to understand the interactions between BFF and Domain and Service.
