@@ -1,34 +1,58 @@
-version: 2
-contracts:
-  - git:
-      branch: main
-      url: https://github.com/specmatic/specmatic-order-contracts.git
-    provides:
-      - specs:
-          - io/specmatic/examples/store/grpc/order_bff/order_bff.proto
-        specType: protobuf
-        config:
-          host: localhost
-          port: 8085
-          importPaths:
-            - ../
-          protocVersion: 3.23.4
-    consumes:
-      - specs:
-          - io/specmatic/examples/store/grpc/order_api/order.proto
-          - io/specmatic/examples/store/grpc/order_api/product.proto
-        specType: protobuf
-        config:
-          host: localhost
-          port: 9090
-          importPaths:
-            - ../
-          protocVersion: 3.23.4
-
-test:
-  resiliencyTests:
-    enable: all
-
-report:
-  formatters:
-    - type: ctrf
+version: 3
+systemUnderTest:
+  service:
+    $ref: "#/components/services/orderBffGrpcService"
+    runOptions:
+      $ref: "#/components/runOptions/orderBffGrpcServiceTest"
+dependencies:
+  services:
+    - service:
+        $ref: "#/components/services/orderAndProductGrpcService"
+        runOptions:
+          $ref: "#/components/runOptions/orderAndProductGrpcServiceMock"
+specmatic:
+  settings:
+    test:
+      schemaResiliencyTests: all
+components:
+  sources:
+    specmaticOrderContracts:
+      git:
+        url: https://github.com/specmatic/specmatic-order-contracts.git
+  services:
+    orderBffGrpcService:
+      description: Order BFF GRPC Service
+      definitions:
+        - definition:
+            source:
+              $ref: "#/components/sources/specmaticOrderContracts"
+            specs:
+              - io/specmatic/examples/store/grpc/order_bff/order_bff.proto
+    orderAndProductGrpcService:
+      description: Order and Product GRPC Service
+      definitions:
+        - definition:
+            source:
+              $ref: "#/components/sources/specmaticOrderContracts"
+            specs:
+              - io/specmatic/examples/store/grpc/order_api/order.proto
+              - io/specmatic/examples/store/grpc/order_api/product.proto
+  runOptions:
+    orderBffGrpcServiceTest:
+      protobuf:
+        type: test
+        host: localhost
+        port: 8085
+        importPaths:
+          - ../
+        protocVersion: 3.23.4
+        requestTimeout: 5000 # duration in milliseconds to wait for a response before timing out
+    orderAndProductGrpcServiceMock:
+      protobuf:
+        type: mock
+        host: localhost
+        port: 9090
+        importPaths:
+          - ../
+        protocVersion: 3.23.4
+        requestTimeout: 5000

@@ -27,6 +27,7 @@ class ContractTestUsingTestContainer {
                 .withCommand("mock")
                 .withFileSystemBind("./src", "/usr/src/app/src", BindMode.READ_ONLY)
                 .withFileSystemBind("./specmatic.yaml", "/usr/src/app/specmatic.yaml", BindMode.READ_ONLY)
+                .withFileSystemBind("./build/reports/specmatic", "/usr/src/app/build/reports/specmatic", BindMode.READ_WRITE)
                 .withNetworkMode("host")
                 .waitingFor(Wait.forLogMessage(".*gRPC Stub server is running on.*", 1))
                 .withLogConsumer { print(it.utf8String) }
@@ -38,6 +39,7 @@ class ContractTestUsingTestContainer {
             .withCommand("test")
             .withFileSystemBind("./src", "/usr/src/app/src", BindMode.READ_ONLY)
             .withFileSystemBind("./specmatic.yaml", "/usr/src/app/specmatic.yaml", BindMode.READ_ONLY)
+            .withFileSystemBind("./build/reports/specmatic", "/usr/src/app/build/reports/specmatic", BindMode.READ_WRITE)
             .withNetworkMode("host")
             .waitingFor(Wait.forLogMessage(".*Tests run:.*", 1))
             .withLogConsumer { print(it.utf8String) }
