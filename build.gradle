@@ -27,7 +27,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect"
     implementation "build.buf:protovalidate:0.2.1"
 
-    compileOnly "jakarta.annotation:jakarta.annotation-api:1.3.5" // Java 9+ compatibility - Do NOT update to 2.0.0
+    compileOnly "jakarta.annotation:jakarta.annotation-api:3.0.0" // Java 9+ compatibility - Do NOT update to 2.0.0
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation("io.specmatic.enterprise:executable:${specmaticEnterpriseVersion}")
