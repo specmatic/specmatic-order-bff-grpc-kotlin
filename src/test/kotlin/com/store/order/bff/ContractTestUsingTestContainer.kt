@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.testcontainers.containers.BindMode
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
-import org.testcontainers.images.PullPolicy.alwaysPull
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
@@ -20,16 +19,9 @@ class ContractTestUsingTestContainer {
         @JvmStatic
         fun isNonCIOrLinux(): Boolean = System.getenv("CI") != "true" || System.getProperty("os.name").lowercase().contains("linux")
 
-        private fun enterpriseImage(): String =
-            if(!System.getenv("ENTERPRISE_ARTIFACT_URL").isNullOrEmpty())
-                "specmatic/enterprise-snapshot"
-            else
-                "specmatic/enterprise"
-
         @Container
         private val stubContainer: GenericContainer<*> =
-            GenericContainer(enterpriseImage())
-                .withImagePullPolicy(alwaysPull())
+            GenericContainer("specmatic/enterprise")
                 .withCommand("mock")
                 .withFileSystemBind("./src", "/usr/src/app/src", BindMode.READ_ONLY)
                 .withFileSystemBind("./specmatic.yaml", "/usr/src/app/specmatic.yaml", BindMode.READ_ONLY)
@@ -40,8 +32,7 @@ class ContractTestUsingTestContainer {
     }
 
     private val testContainer: GenericContainer<*> =
-        GenericContainer(enterpriseImage())
-            .withImagePullPolicy(alwaysPull())
+        GenericContainer("specmatic/enterprise")
             .withCommand("test")
             .withFileSystemBind("./src", "/usr/src/app/src", BindMode.READ_ONLY)
             .withFileSystemBind("./specmatic.yaml", "/usr/src/app/specmatic.yaml", BindMode.READ_ONLY)
