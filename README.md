@@ -13,6 +13,7 @@ This BFF project relies on the [OrderAPI domain service](https://github.com/spec
 * [product.proto](https://github.com/specmatic/specmatic-order-contracts/blob/main/io/specmatic/examples/store/grpc/order_api/product.proto)
 
 The [`ContractTest`](./src/test/kotlin/com/store/order/bff/ContractTest.kt) class demonstrates how to use Specmatic to test **specmatic-order-bff-grpc-kotlin** gRPC server app using the above proto files.
+The server also exposes the standard `grpc.health.v1.Health/Check` service, which the tests wait for before running contract checks.
 
 ## Requirements
 

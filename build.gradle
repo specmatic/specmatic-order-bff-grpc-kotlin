@@ -24,6 +24,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter"
     implementation "org.springframework.boot:spring-boot-starter-aop"
     implementation "net.devh:grpc-spring-boot-starter:3.1.0.RELEASE"
+    implementation "io.grpc:grpc-services:1.63.0"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
     implementation "build.buf:protovalidate:0.2.1"
 
